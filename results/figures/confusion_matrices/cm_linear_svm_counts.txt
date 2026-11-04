@@ -1,0 +1,2 @@
+Figure: cm_linear_svm_counts.png
+Caption: Confusion matrix for Linear SVM evaluated on the 10,000 MNIST test samples. Values indicate raw classification counts. Diagonal entries reflect correct classifications, while off-diagonal elements show digit confusions.

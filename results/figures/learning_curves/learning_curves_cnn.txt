@@ -1,0 +1,2 @@
+Figure: learning_curves_cnn.png
+Caption: Training and validation loss and accuracy curves for CNN across training epochs. The convergence trajectories demonstrate stable optimization with early stopping preventing over-fitting.

@@ -1,0 +1,2 @@
+Figure: misclassified_svd___random_forest.png
+Caption: Gallery of handwritten digit images misclassified by SVD + Random Forest on the MNIST test set. Examining these samples reveals genuine human ambiguities, irregular stroke thicknesses, slanted axes, and atypical digit topologies that challenge single-model decision boundaries.

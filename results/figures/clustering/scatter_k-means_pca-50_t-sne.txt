@@ -1,0 +1,2 @@
+Figure: scatter_k-means_pca-50_t-sne.png
+Caption: Two-dimensional t-SNE topology visualization of K-Means applied to PCA-50 representations. Left pane displays the unsupervised cluster partitions; right pane shows true handwritten digit identities. Note: Low-dimensional projections non-linearly compress feature space, so visual cluster proximities must be interpreted with caution relative to higher-dimensional metric distances.

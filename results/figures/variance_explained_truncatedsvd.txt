@@ -1,0 +1,2 @@
+Figure: variance_explained_truncatedsvd.png
+Caption: Scree plot and cumulative explained variance ratio for TruncatedSVD decomposition of MNIST 784-dimensional pixel vectors. The first 50 components capture over 82% of total dataset variance, enabling significant compression with minimal information loss.

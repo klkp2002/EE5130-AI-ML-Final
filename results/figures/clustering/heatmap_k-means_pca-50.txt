@@ -1,0 +1,2 @@
+Figure: heatmap_k-means_pca-50.png
+Caption: Contingency matrix mapping discovered clusters from K-Means (PCA-50) to true digit labels. Cell color reflects the conditional probability P(Digit | Cluster); overlaid numbers indicate absolute sample counts. Sharp concentrated peaks along distinct columns correspond to high cluster purity.

@@ -1,0 +1,2 @@
+Figure: reliability_ensemble_(final_answer).png
+Caption: Reliability diagram and Expected Calibration Error (ECE) for Ensemble (Final Answer). Bars matching the diagonal indicate that confidence accurately mirrors true empirical probability. Shaded red gaps highlight miscalibration.

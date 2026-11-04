@@ -1,0 +1,2 @@
+Figure: accuracy_vs_latency.png
+Caption: Empirical trade-off between MNIST classification accuracy (%) and per-sample inference latency (ms, logarithmic scale) across all evaluated models. High-capacity non-linear classifiers (CNN, RBF SVM) offer peak accuracy, whereas linear models and PCA pipelines provide sub-millisecond latencies suitable for ultra-fast deployment.

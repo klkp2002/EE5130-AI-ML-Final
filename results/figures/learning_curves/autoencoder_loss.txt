@@ -1,0 +1,2 @@
+Figure: autoencoder_loss.png
+Caption: Mean Squared Error (MSE) reconstruction loss curve for the 32-dimensional convolutional/dense Autoencoder across training epochs.

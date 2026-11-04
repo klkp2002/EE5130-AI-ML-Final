@@ -1,0 +1,2 @@
+Figure: dbscan_k_distance.png
+Caption: k-distance graph for k=5 nearest neighbors across MNIST samples in 50-dimensional PCA space. The sharp upward inflection around distance 4.0-5.5 guides the selection of the epsilon neighborhood radius.

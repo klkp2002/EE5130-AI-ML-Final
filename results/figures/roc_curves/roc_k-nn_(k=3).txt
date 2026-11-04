@@ -1,0 +1,2 @@
+Figure: roc_k-nn_(k=3).png
+Caption: One-vs-Rest Receiver Operating Characteristic (ROC) curves across all ten handwritten digit classes for k-NN (k=3) on the 10,000 MNIST test images. Near-vertical curves hugging the top-left indicate exceptional discrimination.

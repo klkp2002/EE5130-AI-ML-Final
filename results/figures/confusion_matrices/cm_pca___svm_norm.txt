@@ -1,0 +1,2 @@
+Figure: cm_pca___svm_norm.png
+Caption: Confusion matrix for PCA + SVM evaluated on the 10,000 MNIST test samples. Values represent row-normalized recall per class. Diagonal entries reflect correct classifications, while off-diagonal elements show digit confusions.

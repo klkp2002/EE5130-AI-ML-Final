@@ -1,0 +1,2 @@
+Figure: rl_learning_curves.png
+Caption: Learning curves (mean ± standard deviation across independent random seeds) for contextual bandit RL agents (Q-Learning, SARSA, TD(0), and Monte Carlo) trained on MNIST 50-dimensional PCA state representations. Because episodes terminate after a single step (T=1), the temporal bootstrapping term gamma * Q(s', a') vanishes, causing the mathematical update rules for Q-Learning, SARSA, and Monte Carlo to converge to equivalent gradient updates.

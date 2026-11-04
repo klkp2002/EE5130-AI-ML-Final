@@ -1,0 +1,1 @@
+Figure UI-1: EE5130 MNIST Mini Project Exhibition Interface. Demonstrates interactive drawing canvas (280x280), dual preprocessing inspection (bounding-box crop and centered 28x28 tensor), calibrated probability bar chart, all-model breakdown comparison table, real-time unsupervised PCA cluster topology profiler, and 10-sample random test set benchmark modal.

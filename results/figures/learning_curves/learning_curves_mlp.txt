@@ -1,0 +1,2 @@
+Figure: learning_curves_mlp.png
+Caption: Training and validation loss and accuracy curves for MLP across training epochs. The convergence trajectories demonstrate stable optimization with early stopping preventing over-fitting.

@@ -1,0 +1,2 @@
+Figure: sizes_k-means_pca-50.png
+Caption: Sample distribution across clusters discovered by K-Means on PCA-50. Uniform distributions indicate balanced grouping, whereas prominent skew or large noise clusters indicate density disparities and outlier separation.

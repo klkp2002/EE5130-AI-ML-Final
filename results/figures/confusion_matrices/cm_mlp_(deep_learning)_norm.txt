@@ -1,0 +1,2 @@
+Figure: cm_mlp_(deep_learning)_norm.png
+Caption: Confusion matrix for MLP (Deep Learning) evaluated on the 10,000 MNIST test samples. Values represent row-normalized recall per class. Diagonal entries reflect correct classifications, while off-diagonal elements show digit confusions.

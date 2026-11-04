@@ -1,0 +1,2 @@
+Figure: cm_random_forest_norm.png
+Caption: Confusion matrix for Random Forest evaluated on the 10,000 MNIST test samples. Values represent row-normalized recall per class. Diagonal entries reflect correct classifications, while off-diagonal elements show digit confusions.

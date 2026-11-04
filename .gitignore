@@ -1,0 +1,65 @@
+# ==============================================================================
+# EE5130 MNIST Mini Project .gitignore
+# ==============================================================================
+
+# Virtual Environments
+.venv/
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# Python Bytecode & Runtime Caches
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Test & Coverage Caches
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+
+# Matplotlib & Framework Caches
+.cache/
+*.log
+
+# Large Datasets (Exceeds GitHub 100MB File Size Limit)
+# Note: Re-downloadable via fetch_openml or data pipeline
+data/*.csv
+data/mnist_train.csv
+data/mnist_test.csv
+*.csv
+
+# Exceptions: Keep dataset partition splits JSON
+!data/splits.json
+
+# Large Serialized Model Checkpoints (>50MB total)
+# (Uncomment below if you do NOT want to push trained models to GitHub)
+# models/*.joblib
+# models/*.pt
+
+# Temporary & Precomputed Large Caches
+# (Optional: uncomment to rebuild on fresh clone)
+# results/json/*.json
+
+# IDE & Editor Specific Metadata
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Operating System Files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+[Dd]esktop.ini
+$RECYCLE.BIN/
+
+# Jupyter & IPython Caches (if any)
+.ipynb_checkpoints/
+

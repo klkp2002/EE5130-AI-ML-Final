@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EE5130 MNIST Mini Project – Exhibition Inference Suite</title>
+  <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+
+  <!-- Top Exhibition Header -->
+  <header>
+    <h1>EE5130 MNIST MINI PROJECT: REAL-TIME INFERENCE & CLUSTER TOPOLOGY</h1>
+    <div class="subtitle">SUPERVISED CLASSIFICATION & UNSUPERVISED CLUSTERING EXPOSÉ</div>
+    <div class="hint">[PRESS F11 FOR FULLSCREEN EXHIBITION MODE]</div>
+    <button id="fullscreenBtn" class="fullscreen-btn" title="Toggle Fullscreen">⛶ Fullscreen</button>
+  </header>
+
+  <!-- Main Exhibition Dashboard -->
+  <main class="dashboard-grid">
+
+    <!-- Left Column: Input Drawing Canvas & Model Selection -->
+    <aside class="panel sidebar">
+      <div class="panel-header">
+        <span>Input Canvas (280x280)</span>
+      </div>
+
+      <div class="canvas-container">
+        <canvas id="drawCanvas" width="280" height="280"></canvas>
+      </div>
+
+      <div class="canvas-actions">
+        <button id="predictBtn" class="btn btn-blue">PREDICT DIGIT</button>
+        <button id="clearBtn" class="btn btn-grey">CLEAR CANVAS</button>
+        <button id="randomSampleBtn" class="btn btn-green">RANDOM TEST SAMPLE</button>
+        <button id="benchmarkBtn" class="btn btn-purple">BENCHMARK 10</button>
+      </div>
+
+      <div class="file-upload-wrap">
+        <input type="file" id="digitUploadInput" accept="image/*" style="display:none;">
+        <label for="digitUploadInput" class="file-upload-label">or upload custom image file...</label>
+      </div>
+
+      <!-- Model Zoo Radio List -->
+      <div class="model-group">
+        <div class="panel-header">
+          <span>Active Inference Model</span>
+        </div>
+        <div id="modelListContainer" class="model-scroll-list">
+          <div style="padding:10px; color:#888; font-size:0.75rem;">Loading model zoo...</div>
+        </div>
+      </div>
+
+      <!-- Live Inference Status Panel -->
+      <div class="status-box">
+        <div class="panel-header" style="margin-bottom:6px; font-size:0.75rem;">
+          <span>System Inference Status</span>
+        </div>
+        <div class="status-line">
+          <span>Model:</span>
+          <span id="statusActiveModel" class="status-val">-</span>
+        </div>
+        <div class="status-line">
+          <span>Prediction:</span>
+          <span id="statusPredDigit" class="status-val">-</span>
+        </div>
+        <div class="status-line">
+          <span>Latency:</span>
+          <span id="statusLatency" class="status-val">-</span>
+        </div>
+        <div class="status-line">
+          <span>Outcome:</span>
+          <span id="statusOutcome" class="status-val">Draw digit or load sample</span>
+        </div>
+        <div class="status-line" style="margin-bottom:0;">
+          <span>Top 3:</span>
+          <span id="statusTop3" class="status-val">-</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Center/Right Column: Preprocessing Previews, Probability Chart & Comparison Table -->
+    <section class="panel center-panel">
+      <div class="panel-header">
+        <span>Digit Preprocessing & Probability Calibration</span>
+      </div>
+
+      <!-- Preprocessing & Chart View -->
+      <div class="inference-view">
+        <div class="preview-box">
+          <div class="preview-title">1. Bounding Box Crop</div>
+          <div class="preview-img-wrap">
+            <img id="cropBoxImg" class="preview-img" style="display:none;" alt="crop">
+          </div>
+        </div>
+
+        <div class="preview-box">
+          <div class="preview-title" id="tensorTitle">2. 28x28 Tensor</div>
+          <div class="preview-img-wrap">
+            <img id="tensorImg" class="preview-img" style="display:none;" alt="tensor">
+          </div>
+        </div>
+
+        <div class="chart-box">
+          <div class="chart-title">
+            OUTPUT PROBABILITY VECTOR <span id="chartTitleLatency" style="color:var(--text-muted); font-size:0.7rem;">(0.0 ms latency)</span>
+          </div>
+          <div id="probabilityChart" class="chart-content"></div>
+        </div>
+      </div>
+
+      <!-- Model Comparison Section -->
+      <div class="comparison-section">
+        <div class="comparison-toolbar">
+          <div class="strategy-selector">
+            <label for="combinationStrategySelect">Ensemble Method:</label>
+            <select id="combinationStrategySelect">
+              <option value="stacking" selected>Stacking Meta-Classifier</option>
+              <option value="soft">Soft Voting (Mean Probability)</option>
+              <option value="weighted">Weighted Confidence Voting</option>
+              <option value="hard">Hard Plurality Voting</option>
+            </select>
+          </div>
+          <div id="agreementSummaryText" class="agreement-pill"></div>
+        </div>
+
+        <div class="table-scroll">
+          <table class="model-table">
+            <thead>
+              <tr>
+                <th>Model</th>
+                <th>Family</th>
+                <th>Pred</th>
+                <th>Confidence</th>
+                <th>Latency</th>
+                <th>Agreement</th>
+              </tr>
+            </thead>
+            <tbody id="comparisonTableBody">
+              <!-- Populated dynamically via app.js -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Bottom Bar: Unsupervised Topology Metrics & Link to External Clusters Page -->
+    <footer class="bottom-panel">
+      <div class="topology-stats">
+        <div id="clusterPlaceholderText" style="color:var(--text-muted);">
+          Unsupervised Cluster Topology: Run inference or load sample to view embedding space metrics
+        </div>
+        <div id="clusterActiveDetails" style="display:none; gap:24px;">
+          <div class="topology-item">
+            <span class="lbl">K-Means Cluster:</span>
+            <span id="clusterAssigned" class="val">-</span>
+          </div>
+          <div class="topology-item">
+            <span class="lbl">Dominant Digit:</span>
+            <span id="clusterDominant" class="val">-</span>
+          </div>
+          <div class="topology-item">
+            <span class="lbl">Dist to Centroid:</span>
+            <span id="clusterDist" class="val">-</span>
+          </div>
+        </div>
+      </div>
+
+      <a href="/clusters" target="_blank" class="open-clusters-btn">
+        EXPLORE CLUSTER SPREAD PAGE &rarr;
+      </a>
+    </footer>
+
+  </main>
+
+  <!-- 10-Sample Benchmark Modal -->
+  <div id="benchmarkModal" class="modal-overlay">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 style="font-size:0.95rem; font-weight:bold; color:#fff;">10-Sample Random Test Set Benchmark</h3>
+        <button id="closeModalBtn" class="btn btn-grey" style="padding:2px 8px; font-size:0.8rem;">✕</button>
+      </div>
+      <div id="benchmarkGrid" class="benchmark-grid">
+        <!-- Cards inserted dynamically -->
+      </div>
+      <div class="modal-footer">
+        <span id="benchSummaryStats">Running evaluation...</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Local Bundled Offline Scripts (Zero CDN) -->
+  <script src="/static/vendor/plotly.min.js"></script>
+  <script src="/static/js/canvas.js"></script>
+  <script src="/static/js/app.js"></script>
+</body>
+</html>
+

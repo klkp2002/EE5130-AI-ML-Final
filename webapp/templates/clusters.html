@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EE5130 MNIST Mini Project – Cluster Spread Explorer</title>
+  <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body class="scrollable-page">
+
+  <!-- Top Controls & Navigation Bar -->
+  <header class="clusters-header">
+    <div>
+      <h1>EE5130 CLUSTER SPREAD EXPLORER: LATENT SPACE TOPOLOGY & INTERACTION</h1>
+      <div class="subtitle">UNSUPERVISED MANIFOLD GEOMETRY, SPREAD DISTRIBUTIONS & LIVE QUERY EMBEDDING</div>
+    </div>
+
+    <div class="cluster-controls-bar">
+      <div class="control-item">
+        <label for="clusterMethodSelect">Method:</label>
+        <select id="clusterMethodSelect">
+          <option value="K-Means" selected>K-Means</option>
+          <option value="Mini-Batch K-Means">Mini-Batch K-Means</option>
+          <option value="GMM">Gaussian Mixture Model (GMM)</option>
+          <option value="Agglomerative">Agglomerative Hierarchical</option>
+          <option value="DBSCAN">DBSCAN (Density-Based)</option>
+          <option value="Spectral">Spectral Clustering</option>
+        </select>
+      </div>
+
+      <div class="control-item">
+        <label for="clusterProjectionSelect">Projection:</label>
+        <select id="clusterProjectionSelect">
+          <option value="PCA-3D" selected>PCA 3-D (Interactive 3D Point Cloud)</option>
+          <option value="t-SNE-3D">t-SNE 3-D (Interactive 3D Point Cloud)</option>
+          <option value="PCA-2D">PCA 2-D (Planar View)</option>
+          <option value="t-SNE">t-SNE 2-D (Planar View)</option>
+          <option value="Side-by-Side">Dual View (PCA & t-SNE 2-D)</option>
+        </select>
+      </div>
+
+
+      <div class="control-item">
+        <label for="clusterColorSelect">Color By:</label>
+        <select id="clusterColorSelect">
+          <option value="cluster" selected>Assigned Cluster</option>
+          <option value="label">True Digit Label</option>
+        </select>
+      </div>
+
+      <div id="clusterSyncStatus" class="sync-badge" title="Listens to drawing canvas in the main exhibition tab">
+        <span class="dot"></span> Live Tab Sync Active
+      </div>
+
+      <a href="/" class="btn btn-grey" style="text-decoration:none; padding:6px 12px;">
+        &larr; Back to Inference Demo
+      </a>
+    </div>
+  </header>
+
+  <!-- Main Content Container -->
+  <main class="clusters-main">
+
+    <!-- Row 1: Objective Clustering Metrics Cards -->
+    <section class="cluster-metrics-grid">
+      <div class="metric-card">
+        <span class="lbl">Silhouette Score</span>
+        <span id="metricSilhouette" class="val">-</span>
+        <span class="sub">[-1.0 to +1.0, higher is better]</span>
+      </div>
+      <div class="metric-card">
+        <span class="lbl">Davies-Bouldin Index</span>
+        <span id="metricDaviesBouldin" class="val">-</span>
+        <span class="sub">[Lower is better / tighter]</span>
+      </div>
+      <div class="metric-card">
+        <span class="lbl">Calinski-Harabasz</span>
+        <span id="metricCalinski" class="val">-</span>
+        <span class="sub">[Higher is better separation]</span>
+      </div>
+      <div class="metric-card">
+        <span class="lbl">Adjusted Rand Index (ARI)</span>
+        <span id="metricARI" class="val">-</span>
+        <span class="sub">[Ground-truth agreement]</span>
+      </div>
+      <div class="metric-card">
+        <span class="lbl">Normalized Mutual Info</span>
+        <span id="metricNMI" class="val">-</span>
+        <span class="sub">[Information sharing]</span>
+      </div>
+      <div class="metric-card">
+        <span class="lbl">Cluster Purity / Time</span>
+        <span id="metricPurity" class="val">-</span>
+        <span id="metricRuntime" class="sub">-</span>
+      </div>
+    </section>
+
+    <!-- Row 2: 2D Manifold Scatter & Within-Cluster Distance Spread Boxplots -->
+    <section class="viz-row">
+      <!-- 2D / 3D Projection Scatter -->
+      <div class="viz-panel" style="grid-column: 1 / 2;">
+        <div class="viz-title">
+          <span id="scatterTitle">3D Latent Manifold Scatter (PCA-3D)</span>
+          <span id="liveQueryTag" style="font-size:0.75rem; color:#ffd700; display:none; font-family:var(--font-mono);">
+            ★ Live Query Active
+          </span>
+        </div>
+        <div class="viz-subtitle">
+          Click and drag with mouse to rotate in 3D, scroll to zoom, hover to inspect sample digit and cluster.
+        </div>
+        <div id="scatterContainer" class="plotly-chart-wrap"></div>
+      </div>
+
+
+      <!-- Within-Cluster Spread Boxplots -->
+      <div class="viz-panel" style="grid-column: 2 / 3;">
+        <div class="viz-title">
+          <span>Within-Cluster Distance-to-Centroid Spread</span>
+          <span style="font-size:0.72rem; color:var(--text-muted); font-family:var(--font-mono);">Euclidean distance in 50-D PCA</span>
+        </div>
+        <div class="viz-subtitle">
+          Quantifies cluster compactness: tight and pure clusters vs diffuse, mixed clusters.
+        </div>
+        <div id="spreadPlotContainer" class="plotly-chart-wrap"></div>
+      </div>
+    </section>
+
+    <!-- Row 3: Cluster Sizes Bar Chart & Contingency Heatmap -->
+    <section class="viz-row">
+      <!-- Cluster Sizes Bar Chart -->
+      <div class="viz-panel">
+        <div class="viz-title">
+          <span>Cluster Point Distribution & Balance</span>
+        </div>
+        <div class="viz-subtitle">
+          Reveals cluster balance, high-density groupings, and noise points (e.g. DBSCAN label -1).
+        </div>
+        <div id="clusterSizesContainer" class="plotly-chart-wrap"></div>
+      </div>
+
+      <!-- Cluster-vs-Digit Contingency Heatmap -->
+      <div class="viz-panel">
+        <div class="viz-title">
+          <span>Cluster vs. True Digit Contingency Matrix</span>
+        </div>
+        <div class="viz-subtitle">
+          Rows represent assigned clusters; columns represent true digits (0–9).
+        </div>
+        <div id="contingencyHeatmapContainer" class="plotly-chart-wrap"></div>
+      </div>
+    </section>
+
+    <!-- Row 4: Cluster Exemplar Thumbnails & Confusion Analysis -->
+    <section class="gallery-panel">
+      <div class="viz-title">
+        <span>Cluster Exemplars (Centroid Nearest Neighbors) & Structural Ambiguities</span>
+      </div>
+      <div class="viz-subtitle">
+        Visual validation: inspect the 3 most representative digits nearest each cluster center and top confused digits.
+      </div>
+      <div id="clusterGalleryGrid" class="gallery-grid">
+        <!-- Rendered dynamically -->
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Local Bundled Offline Scripts (Zero CDN) -->
+  <script src="/static/vendor/plotly.min.js"></script>
+  <script src="/static/js/clusters.js"></script>
+</body>
+</html>
+

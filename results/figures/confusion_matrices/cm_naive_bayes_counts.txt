@@ -1,0 +1,2 @@
+Figure: cm_naive_bayes_counts.png
+Caption: Confusion matrix for Naive Bayes evaluated on the 10,000 MNIST test samples. Values indicate raw classification counts. Diagonal entries reflect correct classifications, while off-diagonal elements show digit confusions.

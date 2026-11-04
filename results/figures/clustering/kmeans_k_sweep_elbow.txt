@@ -1,0 +1,2 @@
+Figure: kmeans_k_sweep_elbow.png
+Caption: K-Means elbow heuristic (Within-Cluster Sum of Squares, left) and mean silhouette score (right) across K=5 to 15. While mathematical inertia smoothly decreases without an abrupt single hinge, silhouette peaks corroborate that 10 clusters provide a natural structural decomposition matching the ten digit categories.
