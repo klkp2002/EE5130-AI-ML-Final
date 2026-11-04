@@ -1,0 +1,16 @@
+# Training inputs, reports, and local tooling are not needed for inference.
+.git/
+.venv/
+venv/
+.cache/
+.pytest_cache/
+**/__pycache__/
+**/*.pyc
+**/*.log
+data/
+docs/
+report/
+scripts/
+tests/
+results/figures/
+results/tables/
