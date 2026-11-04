@@ -1,0 +1,19 @@
+{
+  "format_version": 1,
+  "model_count": 22,
+  "sklearn_version": "1.9.1",
+  "neural_validation_samples": 134,
+  "neural_max_probability_differences": {
+    "CNN (Deep Learning)": 6.556510925292969e-07,
+    "MLP (Deep Learning)": 6.854534149169922e-07
+  },
+  "standalone_models_validated": 22,
+  "ensemble_validation_samples": 20,
+  "ensemble_methods": [
+    "stacking",
+    "soft",
+    "weighted",
+    "hard"
+  ],
+  "bundle_bytes": 19963483
+}

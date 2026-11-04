@@ -27,6 +27,7 @@ from typing import Tuple
 
 from src.features import FeaturePipeline
 from src.utils import JSON_DIR, MODELS_DIR, load_json, save_json
+from src.web_models import load_feature_pipeline
 
 router = APIRouter(prefix="/api")
 
@@ -410,7 +411,7 @@ def assign_sample_cluster(req: PredictRequest) -> Dict[str, Any]:
         raise HTTPException(status_code=400, detail="Must provide pixels or image_b64")
 
     if FEATURE_PIPELINE is None:
-        FEATURE_PIPELINE = FeaturePipeline.load()
+        FEATURE_PIPELINE = load_feature_pipeline()
 
     pca_50 = FEATURE_PIPELINE.transform_pca(norm_vector)[0]
     pca_2d = [float(pca_50[0]), float(pca_50[1])]

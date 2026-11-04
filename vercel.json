@@ -3,7 +3,7 @@
   "functions": {
     "webapp/app.py": {
       "maxDuration": 300,
-      "excludeFiles": "{data/**,docs/**,report/**,scripts/**,tests/**,results/figures/**,results/tables/**,**/__pycache__/**,**/*.pyc,**/*.log}"
+      "excludeFiles": "{data/**,docs/**,report/**,scripts/**,tests/**,results/figures/**,results/tables/**,models/*.joblib,models/*.pt,src/nn_models.py,**/__pycache__/**,**/*.pyc,**/*.log}"
     }
   }
 }

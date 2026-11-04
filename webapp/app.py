@@ -6,6 +6,7 @@ Offline capability: Zero CDN dependencies.
 """
 
 from contextlib import asynccontextmanager
+import os
 from pathlib import Path
 from typing import Dict, Any
 import joblib
@@ -17,6 +18,7 @@ from fastapi.templating import Jinja2Templates
 
 from src.features import FeaturePipeline
 from src.utils import MODELS_DIR, JSON_DIR, load_json
+from src.web_models import INFERENCE_BUNDLE_PATH, load_inference_bundle
 from webapp.api.routes import router as api_router
 import webapp.api.routes as routes_module
 
@@ -32,26 +34,34 @@ async def lifespan(app: FastAPI):
     print("WARMING UP EE5130 MNIST APPLICATION SERVER...")
     print("=" * 60)
 
-    # 1. Load Feature Pipeline
-    pipeline_file = MODELS_DIR / "feature_pipeline.joblib"
-    if pipeline_file.exists():
-        routes_module.FEATURE_PIPELINE = FeaturePipeline.load(pipeline_file)
-        print("  - Loaded FeaturePipeline (k=50)")
-
-    # 2. Discover and Load all Serialized Models
-    for model_path in MODELS_DIR.glob("*.joblib"):
-        if model_path.stem in ["feature_pipeline", "cluster_models"]:
-            continue
-        try:
-            m = joblib.load(model_path)
-            if hasattr(m, "predict_proba"):
-                if model_path.stem == "ensemble_model":
-                    routes_module.LOADED_MODELS["ENSEMBLE – FINAL ANSWER"] = m
-                else:
-                    routes_module.LOADED_MODELS[m.name] = m
-                print(f"  - Loaded model: {m.name} ({m.family})")
-        except Exception as e:
-            print(f"  Warning loading {model_path.name}: {e}")
+    # The web export shares the ensemble's model instances and needs no PyTorch.
+    if os.environ.get("VERCEL") and not INFERENCE_BUNDLE_PATH.exists():
+        raise RuntimeError("Web model bundle missing; run scripts/export_web_models.py locally and commit its output.")
+    routes_module.LOADED_MODELS.clear()
+    if INFERENCE_BUNDLE_PATH.exists():
+        bundle = load_inference_bundle()
+        routes_module.FEATURE_PIPELINE = bundle["feature_pipeline"]
+        ensemble = bundle["ensemble"]
+        routes_module.LOADED_MODELS.update(ensemble.models)
+        routes_module.LOADED_MODELS["ENSEMBLE – FINAL ANSWER"] = ensemble
+        print(f"  - Loaded compact web bundle ({len(ensemble.models)} models + ensemble)")
+    else:
+        # Original checkpoints remain usable for local training and exhibition.
+        pipeline_file = MODELS_DIR / "feature_pipeline.joblib"
+        if pipeline_file.exists():
+            routes_module.FEATURE_PIPELINE = FeaturePipeline.load(pipeline_file)
+            print("  - Loaded FeaturePipeline (k=50)")
+        for model_path in MODELS_DIR.glob("*.joblib"):
+            if model_path.stem in ["feature_pipeline", "cluster_models"]:
+                continue
+            try:
+                m = joblib.load(model_path)
+                if hasattr(m, "predict_proba"):
+                    key = "ENSEMBLE – FINAL ANSWER" if model_path.stem == "ensemble_model" else m.name
+                    routes_module.LOADED_MODELS[key] = m
+                    print(f"  - Loaded model: {m.name} ({m.family})")
+            except Exception as e:
+                print(f"  Warning loading {model_path.name}: {e}")
 
     # 3. Load Caches
     cache_file = JSON_DIR / "cluster_explorer_cache.json"

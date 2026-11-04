@@ -14,3 +14,8 @@ scripts/
 tests/
 results/figures/
 results/tables/
+
+# Deploy only the validated compact inference bundle, not training checkpoints.
+models/*.joblib
+models/*.pt
+src/nn_models.py

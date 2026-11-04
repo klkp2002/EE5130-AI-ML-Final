@@ -211,3 +211,9 @@ In compliance with course guidelines:
 - **Contribution:** Code architecture design, automated test suites, vectorized HOG feature extraction, Jinja2/Plotly web templates, and technical documentation drafting.
 - **Verification Protocol:** All empirical numbers, training runs, figures, tables, and unit tests were executed locally on CPU, logged in `results/`, verified via automated test suites, and independently inspected by the authors.
 
+
+## Deploying to Vercel
+
+See [Vercel deployment](VERCEL_DEPLOYMENT.md) for the compact inference bundle,
+local export command, and validation details. The web deployment retains all 22
+models and ensemble modes without installing PyTorch at runtime.
